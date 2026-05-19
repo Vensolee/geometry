@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Геометрия 9 класс</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, -apple-system, sans-serif; background: #f0efe9; color: #1a1a1a; }
+header { background: #1a56db; padding: 12px 16px; }
+header h1 { font-size: 16px; font-weight: 700; color: #fff; }
+header p  { font-size: 11px; color: #a8c0f8; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 12px 12px 80px; }
+
+/* TABS */
+.tabs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
+.tab {
+  padding: 6px 12px; border-radius: 20px;
+  border: 1.5px solid #ccc; background: #fff;
+  color: #444; font-size: 12px; cursor: pointer;
+  font-family: inherit;
+}
+.tab.on { background: #1a56db; color: #fff; border-color: #1a56db; font-weight: 700; }
+
+/* MODE */
+.modes { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; flex-wrap: wrap; }
+.mbtn {
+  padding: 8px 16px; border-radius: 8px;
+  border: 1.5px solid #ccc; background: #fff;
+  color: #444; font-size: 13px; cursor: pointer;
+  font-family: inherit;
+}
+.mbtn.on { background: #166534; color: #fff; border-color: #166534; font-weight: 700; }
+.pgr { margin-left: auto; font-size: 13px; color: #777; }
+
+/* CARD — просто показываем/скрываем, без анимации */
+.card {
+  background: #fff; border-radius: 14px;
+  border: 1.5px solid #ddd;
+  margin-bottom: 10px; cursor: pointer;
+  min-height: 200px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px 20px; text-align: center;
+  -webkit-tap-highlight-color: rgba(26,86,219,0.08);
+  touch-action: manipulation;
+}
+.card.back { background: #f0f5ff; }
+.cat  { font-size: 10px; letter-spacing: .1em; color: #bbb; text-transform: uppercase; font-weight: 700; margin-bottom: 8px; }
+.q    { font-size: 18px; font-weight: 700; color: #1a1a1a; line-height: 1.4; }
+.hint { font-size: 12px; color: #ccc; margin-top: 12px; }
+.ans  { font-size: 22px; font-weight: 800; color: #1a56db; line-height: 1.5; white-space: pre-line; }
+.sub  { font-size: 13px; color: #555; margin-top: 8px; line-height: 1.5; white-space: pre-line; }
+
+/* STATS */
+.stats { display: flex; gap: 14px; margin-bottom: 8px; }
+.s-ok { font-size: 13px; color: #166534; }
+.s-no { font-size: 13px; color: #991b1b; }
+
+/* NAV BUTTONS */
+.nav { display: flex; gap: 8px; margin-top: 0; }
+.btn {
+  flex: 1; padding: 13px 8px; border-radius: 10px;
+  border: 1.5px solid #ccc; background: #fff;
+  color: #1a1a1a; font-size: 14px; cursor: pointer;
+  font-family: inherit; font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn:disabled { opacity: .3; cursor: default; }
+.btn.ok  { border-color: #86efac; color: #166534; background: #f0fdf4; }
+.btn.bad { border-color: #fca5a5; color: #991b1b; background: #fff5f5; }
+
+/* QUIZ */
+.qlist { display: flex; flex-direction: column; gap: 10px; }
+.qcard { background: #fff; border: 1.5px solid #ddd; border-radius: 12px; padding: 14px 16px; }
+.qcat  { font-size: 10px; color: #bbb; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px; }
+.qq    { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; line-height: 1.4; }
+.opts  { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+.opt {
+  padding: 10px 12px; border-radius: 8px;
+  border: 1.5px solid #ccc; background: #f7f6f2;
+  color: #1a1a1a; font-size: 13px; cursor: pointer;
+  text-align: left; font-family: inherit; line-height: 1.3;
+  -webkit-tap-highlight-color: transparent;
+}
+.opt.ok2  { background: #f0fdf4; color: #166534; border-color: #4ade80; font-weight: 700; }
+.opt.bad2 { background: #fff5f5; color: #991b1b; border-color: #fca5a5; }
+.sbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; background: #fff;
+  border: 1.5px solid #ddd; border-radius: 10px;
+  margin-bottom: 12px; font-size: 13px; color: #555;
+  flex-wrap: wrap;
+}
+.rbtn {
+  margin-left: auto; padding: 5px 12px;
+  border-radius: 6px; border: 1.5px solid #ccc;
+  background: #f7f6f2; color: #555;
+  font-size: 12px; cursor: pointer; font-family: inherit;
+}
+
+/* ALL FORMULAS */
+.allsec { background: #fff; border: 1.5px solid #ddd; border-radius: 12px; margin-bottom: 10px; overflow: hidden; }
+.allhdr { padding: 12px 16px; background: #f7f6f2; font-size: 14px; font-weight: 700; color: #333; cursor: pointer; display: flex; justify-content: space-between; border-bottom: 1px solid #eee; -webkit-tap-highlight-color: transparent; }
+.allbody { display: none; }
+.allbody.open { display: block; }
+.frow { display: flex; gap: 12px; align-items: flex-start; padding: 10px 16px; border-bottom: 1px solid #f0efe8; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.frow:last-child { border-bottom: none; }
+.frow:active { background: #f7f6f2; }
+.fnum { width: 22px; height: 22px; border-radius: 50%; background: #1a56db; color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.fbody { flex: 1; }
+.fq  { font-size: 12px; color: #888; margin-bottom: 2px; }
+.fa  { font-size: 15px; font-weight: 700; color: #1a1a1a; }
+.fn  { font-size: 11px; color: #aaa; margin-top: 2px; }
+
+@media (max-width: 480px) {
+  .opts { grid-template-columns: 1fr; }
+  .ans  { font-size: 19px; }
+  .q    { font-size: 16px; }
+  .card { min-height: 180px; padding: 20px 16px; }
+  .btn  { padding: 15px 6px; font-size: 15px; }
+  .tab  { padding: 8px 12px; font-size: 13px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>📐 Геометрия — формулы</h1>
+  <p>9 класс · выпускной экзамен · Беларусь</p>
+</header>
+<div class="wrap">
+  <div class="tabs" id="tabs"></div>
+  <div class="modes">
+    <button class="mbtn on" id="m-cards" onclick="setMode('cards')">🃏 Карточки</button>
+    <button class="mbtn"    id="m-quiz"  onclick="setMode('quiz')">✅ Тест</button>
+    <button class="mbtn"    id="m-all"   onclick="setMode('all')">📋 Все формулы</button>
+    <span class="pgr" id="pgr"></span>
+  </div>
+  <div id="area"></div>
+</div>
+
+<script>
+// ─── ДАННЫЕ ───────────────────────────────────────────────────────────
+var D = [
+  { s:"📐 Площади", q:"Площадь треугольника (основание и высота)", a:"S = ½ · a · h", n:"a — основание, h — высота" },
+  { s:"📐 Площади", q:"Площадь треугольника (две стороны и угол)", a:"S = ½ · b · c · sin α", n:"b, c — стороны, α — угол между ними" },
+  { s:"📐 Площади", q:"Формула Герона", a:"S = √(p(p−a)(p−b)(p−c))", n:"p = (a+b+c)/2 — полупериметр" },
+  { s:"📐 Площади", q:"Площадь треугольника через описанную окружность", a:"S = abc / (4R)", n:"R — радиус описанной окружности" },
+  { s:"📐 Площади", q:"Площадь треугольника через вписанную окружность", a:"S = p · r", n:"p — полупериметр, r — радиус вписанной" },
+  { s:"📐 Площади", q:"Площадь равностороннего треугольника", a:"S = a²√3 / 4", n:"a — сторона" },
+  { s:"📐 Площади", q:"Площадь прямоугольника", a:"S = a · b", n:"a и b — стороны" },
+  { s:"📐 Площади", q:"Площадь квадрата (через сторону)", a:"S = a²", n:"" },
+  { s:"📐 Площади", q:"Площадь квадрата (через диагональ)", a:"S = d² / 2", n:"d — диагональ" },
+  { s:"📐 Площади", q:"Площадь параллелограмма (основание × высота)", a:"S = a · h", n:"a — основание, h — высота" },
+  { s:"📐 Площади", q:"Площадь параллелограмма (стороны и угол)", a:"S = a · b · sin α", n:"α — угол между сторонами" },
+  { s:"📐 Площади", q:"Площадь ромба (через диагонали)", a:"S = d₁ · d₂ / 2", n:"d₁ и d₂ — диагонали" },
+  { s:"📐 Площади", q:"Площадь ромба (сторона и высота)", a:"S = a · h", n:"" },
+  { s:"📐 Площади", q:"Площадь ромба (сторона и угол)", a:"S = a² · sin α", n:"α — угол ромба" },
+  { s:"📐 Площади", q:"Площадь трапеции (основания и высота)", a:"S = (a + b) / 2 · h", n:"a, b — основания, h — высота" },
+  { s:"📐 Площади", q:"Площадь трапеции (средняя линия)", a:"S = m · h", n:"m = (a+b)/2" },
+  { s:"📐 Площади", q:"Площадь круга", a:"S = π · R²", n:"R — радиус" },
+  { s:"📐 Площади", q:"Длина окружности", a:"C = 2πR", n:"R — радиус" },
+  { s:"📐 Площади", q:"Площадь сектора", a:"S = πR² · α / 360°", n:"α — угол в градусах" },
+  { s:"📐 Площади", q:"Длина дуги", a:"l = πR · α / 180°", n:"α — угол в градусах" },
+
+  { s:"📏 Треугольники", q:"Теорема Пифагора", a:"a² + b² = c²", n:"c — гипотенуза, a, b — катеты" },
+  { s:"📏 Треугольники", q:"Теорема косинусов", a:"a² = b² + c² − 2bc·cos α", n:"α — угол напротив стороны a" },
+  { s:"📏 Треугольники", q:"Теорема синусов", a:"a/sin α = b/sin β = c/sin γ = 2R", n:"R — радиус описанной окружности" },
+  { s:"📏 Треугольники", q:"Высота к гипотенузе (прямоугольный треугольник)", a:"h = a · b / c", n:"a, b — катеты, c — гипотенуза" },
+  { s:"📏 Треугольники", q:"Свойство высоты прямоугольного треугольника", a:"h² = CH · HB", n:"H — основание высоты на гипотенузе" },
+  { s:"📏 Треугольники", q:"Проекции катетов на гипотенузу", a:"CH = a²/c,  HB = b²/c", n:"a, b — катеты, c — гипотенуза" },
+  { s:"📏 Треугольники", q:"Радиус вписанной (прямоугольный треугольник)", a:"r = (a + b − c) / 2", n:"a, b — катеты, c — гипотенуза" },
+  { s:"📏 Треугольники", q:"Радиус описанной (прямоугольный треугольник)", a:"R = c / 2", n:"c — гипотенуза" },
+  { s:"📏 Треугольники", q:"Высота равностороннего треугольника", a:"h = a√3 / 2", n:"a — сторона" },
+  { s:"📏 Треугольники", q:"Радиус вписанной (равносторонний треугольник)", a:"r = a√3 / 6", n:"" },
+  { s:"📏 Треугольники", q:"Радиус описанной (равносторонний треугольник)", a:"R = a√3 / 3", n:"= 2r" },
+  { s:"📏 Треугольники", q:"Медиана треугольника", a:"m = ½√(2a² + 2b² − c²)", n:"m — медиана к стороне c" },
+  { s:"📏 Треугольники", q:"Биссектриса треугольника", a:"l² = b·c − m·n", n:"b, c — стороны из вершины\nm, n — отрезки основания" },
+  { s:"📏 Треугольники", q:"Средняя линия треугольника", a:"MN = BC / 2,  MN ∥ BC", n:"соединяет середины двух сторон" },
+
+  { s:"⬛ Четырёхугольники", q:"Периметр параллелограмма", a:"P = 2(a + b)", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Свойства параллелограмма", a:"a∥d, b∥c, a=d, b=c\nα + β = 180°", n:"смежные углы в сумме 180°" },
+  { s:"⬛ Четырёхугольники", q:"Диагонали параллелограмма (сумма квадратов)", a:"d₁² + d₂² = 2(a² + b²)", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Средняя линия трапеции", a:"m = (a + b) / 2", n:"a, b — основания, m ∥ им" },
+  { s:"⬛ Четырёхугольники", q:"Углы трапеции при одной боковой стороне", a:"α + β = 180°", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Диагональ квадрата", a:"d = a√2", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Радиус описанной окружности квадрата", a:"R = a√2 / 2", n:"= d/2" },
+  { s:"⬛ Четырёхугольники", q:"Радиус вписанной окружности квадрата", a:"r = a / 2", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Диагональ прямоугольника", a:"d = √(a² + b²),  d₁ = d₂", n:"диагонали равны" },
+  { s:"⬛ Четырёхугольники", q:"Диагонали ромба", a:"d₁ ⊥ d₂", n:"перпендикулярны, делятся пополам" },
+  { s:"⬛ Четырёхугольники", q:"Вписанный четырёхугольник (углы)", a:"∠A + ∠C = 180°\n∠B + ∠D = 180°", n:"" },
+  { s:"⬛ Четырёхугольники", q:"Описанный четырёхугольник (стороны)", a:"AB + CD = BC + AD", n:"" },
+
+  { s:"⭕ Окружность", q:"Центральный угол", a:"∠AOB = дуге AB (в °)", n:"центральный угол = мера дуги" },
+  { s:"⭕ Окружность", q:"Вписанный угол", a:"∠BAC = ½ · дуги BC", n:"= половина дуги, которую опирает" },
+  { s:"⭕ Окружность", q:"Угол между хордами (внутри)", a:"α = ½·(дуга₁ + дуга₂)", n:"полусумма дуг" },
+  { s:"⭕ Окружность", q:"Угол между секущими (снаружи)", a:"α = ½·(дуга₁ − дуга₂)", n:"полуразность дуг" },
+  { s:"⭕ Окружность", q:"Хорды внутри (произведение отрезков)", a:"PA · PB = PC · PD", n:"P — точка пересечения" },
+  { s:"⭕ Окружность", q:"Две секущие из внешней точки M", a:"MA · MB = MC · MD", n:"внешний отрезок × полная секущая" },
+  { s:"⭕ Окружность", q:"Касательная и секущая из точки M", a:"MT² = MA · MB", n:"MT — касательная" },
+  { s:"⭕ Окружность", q:"Касательная перпендикулярна радиусу", a:"OT ⊥ t", n:"O — центр, T — точка касания" },
+  { s:"⭕ Окружность", q:"Уравнение окружности", a:"(x−x₀)² + (y−y₀)² = R²", n:"(x₀,y₀) — центр, R — радиус" },
+  { s:"⭕ Окружность", q:"Длина касательной из внешней точки", a:"t² = d² − R²", n:"d — расстояние до центра" },
+
+  { s:"🔺 Подобие", q:"Коэффициент подобия", a:"k = a/a₁ = b/b₁ = c/c₁", n:"отношение соответственных сторон" },
+  { s:"🔺 Подобие", q:"Площади подобных треугольников", a:"S₁ / S₂ = k²", n:"" },
+  { s:"🔺 Подобие", q:"Теорема Фалеса", a:"a₁/b₁ = a₂/b₂ = a₃/b₃", n:"три параллельные прямые и две секущие" },
+  { s:"🔺 Подобие", q:"Средняя линия треугольника", a:"MN = BC/2,  MN ∥ BC", n:"" },
+  { s:"🔺 Подобие", q:"Признак подобия ААА (два угла)", a:"∠A=∠A₁ и ∠B=∠B₁  →  △~△", n:"" },
+  { s:"🔺 Подобие", q:"Признак подобия ССС (три стороны)", a:"a/a₁ = b/b₁ = c/c₁  →  △~△", n:"" },
+  { s:"🔺 Подобие", q:"Признак подобия СУС (стороны и угол)", a:"b/b₁ = c/c₁ и ∠A=∠A₁  →  △~△", n:"" },
+
+  { s:"⬡ Правильные многоугольники", q:"Правильный треугольник: сторона через R", a:"a = R√3", n:"R — описанная окружность" },
+  { s:"⬡ Правильные многоугольники", q:"Правильный треугольник: сторона через r", a:"a = 2r√3", n:"r — вписанная окружность" },
+  { s:"⬡ Правильные многоугольники", q:"Квадрат: сторона через R", a:"a = R√2", n:"" },
+  { s:"⬡ Правильные многоугольники", q:"Квадрат: сторона через r", a:"a = 2r", n:"" },
+  { s:"⬡ Правильные многоугольники", q:"Правильный шестиугольник: сторона через R", a:"a = R", n:"сторона РАВНА радиусу описанной!" },
+  { s:"⬡ Правильные многоугольники", q:"Правильный шестиугольник: сторона через r", a:"a = 2r√3 / 3", n:"" },
+  { s:"⬡ Правильные многоугольники", q:"Угол правильного n-угольника", a:"α = 180°·(n−2) / n", n:"n — число сторон" },
+  { s:"⬡ Правильные многоугольники", q:"Площадь правильного многоугольника", a:"S = ½ · P · r", n:"P — периметр, r — вписанная окружность" },
+  { s:"⬡ Правильные многоугольники", q:"Сторона правильного n-угольника через R", a:"a = 2R · sin(180°/n)", n:"" },
+
+  { s:"📊 sin/cos/tg/ctg", q:"sin 30°", a:"1/2", n:"= 0,5" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 30°", a:"√3/2", n:"≈ 0,866" },
+  { s:"📊 sin/cos/tg/ctg", q:"tg 30°",  a:"√3/3", n:"≈ 0,577" },
+  { s:"📊 sin/cos/tg/ctg", q:"ctg 30°", a:"√3",   n:"≈ 1,732" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 45°", a:"√2/2", n:"≈ 0,707" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 45°", a:"√2/2", n:"≈ 0,707" },
+  { s:"📊 sin/cos/tg/ctg", q:"tg 45°",  a:"1",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"ctg 45°", a:"1",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 60°", a:"√3/2", n:"≈ 0,866" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 60°", a:"1/2",  n:"= 0,5" },
+  { s:"📊 sin/cos/tg/ctg", q:"tg 60°",  a:"√3",   n:"≈ 1,732" },
+  { s:"📊 sin/cos/tg/ctg", q:"ctg 60°", a:"√3/3", n:"≈ 0,577" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 90°", a:"1",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 90°", a:"0",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"tg 90°",  a:"не определён", n:"деление на 0" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 0°",  a:"0",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 0°",  a:"1",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 180°",a:"0",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 180°",a:"−1",   n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 270°",a:"−1",   n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 270°",a:"0",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"sin 360°",a:"0",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"cos 360°",a:"1",    n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"Основное тригонометрическое тождество", a:"sin²α + cos²α = 1", n:"для любого угла" },
+  { s:"📊 sin/cos/tg/ctg", q:"Тангенс через sin и cos", a:"tg α = sin α / cos α", n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"Котангенс через sin и cos", a:"ctg α = cos α / sin α", n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"tg α · ctg α", a:"tg α · ctg α = 1", n:"" },
+  { s:"📊 sin/cos/tg/ctg", q:"Дополнительные углы (α + β = 90°)", a:"sin α = cos β\ncos α = sin β", n:"пример: sin 30° = cos 60°" },
+
+  { s:"📍 Координаты", q:"Расстояние между двумя точками", a:"d = √((x₂−x₁)² + (y₂−y₁)²)", n:"A(x₁,y₁) и B(x₂,y₂)" },
+  { s:"📍 Координаты", q:"Координаты середины отрезка", a:"M = ((x₁+x₂)/2 ; (y₁+y₂)/2)", n:"" },
+  { s:"📍 Координаты", q:"Уравнение прямой", a:"y = kx + b", n:"k — наклон, b — сдвиг" },
+  { s:"📍 Координаты", q:"Уравнение окружности", a:"(x−a)² + (y−b)² = R²", n:"(a,b) — центр, R — радиус" },
+  { s:"📍 Координаты", q:"Расстояние от точки до прямой ax+by+c=0", a:"d = |ax₀+by₀+c| / √(a²+b²)", n:"точка M(x₀,y₀)" }
+];
+
+// ─── СОСТОЯНИЕ ────────────────────────────────────────────────────────
+var sections = [];
+(function() {
+  var seen = {};
+  D.forEach(function(c) { if (!seen[c.s]) { seen[c.s] = 1; sections.push(c.s); } });
+})();
+
+var curSec = sections[0];
+var mode   = 'cards';
+var idx    = 0;
+var side   = 'front'; // 'front' или 'back'
+var known  = {};
+var unk    = {};
+var qopts  = null; // массив вариантов для теста
+
+function bySection(s) {
+  return D.filter(function(c) { return c.s === s; });
+}
+
+// ─── ВКЛАДКИ ──────────────────────────────────────────────────────────
+function renderTabs() {
+  var html = '';
+  sections.forEach(function(s, i) {
+    var cls = s === curSec ? 'tab on' : 'tab';
+    // используем индекс секции, не строку — чтобы не было кавычек в onclick
+    html += '<button class="' + cls + '" onclick="goSec(' + i + ')">' + s + '</button>';
+  });
+  document.getElementById('tabs').innerHTML = html;
+}
+
+function goSec(i) {
+  curSec = sections[i];
+  idx = 0; side = 'front'; qopts = null;
+  renderTabs();
+  render();
+}
+
+function setMode(m) {
+  mode = m;
+  document.getElementById('m-cards').className = m === 'cards' ? 'mbtn on' : 'mbtn';
+  document.getElementById('m-quiz').className  = m === 'quiz'  ? 'mbtn on' : 'mbtn';
+  document.getElementById('m-all').className   = m === 'all'   ? 'mbtn on' : 'mbtn';
+  idx = 0; side = 'front'; qopts = null;
+  render();
+}
+
+// ─── КАРТОЧКИ ─────────────────────────────────────────────────────────
+function renderCards() {
+  var cards = bySection(curSec);
+  var card  = cards[idx];
+  document.getElementById('pgr').textContent = (idx+1) + ' / ' + cards.length;
+
+  var knownCount = Object.keys(known).length;
+  var unkCount   = Object.keys(unk).length;
+
+  var html = '<div class="stats">'
+    + '<span class="s-ok">✅ Знаю: ' + knownCount + '</span>'
+    + '<span class="s-no">❌ Повторить: ' + unkCount + '</span>'
+    + '</div>';
+
+  if (side === 'front') {
+    html += '<div class="card" onclick="flip()">'
+      + '<div class="cat">' + curSec + '</div>'
+      + '<div class="q">' + card.q.replace(/\n/g, '<br>') + '</div>'
+      + '<div class="hint">👆 нажми — увидишь ответ</div>'
+      + '</div>';
+  } else {
+    html += '<div class="card back" onclick="flip()">'
+      + '<div class="cat">' + curSec + '</div>'
+      + '<div class="ans">' + card.a.replace(/\n/g, '<br>') + '</div>'
+      + (card.n ? '<div class="sub">' + card.n + '</div>' : '')
+      + '</div>';
+  }
+
+  var markHtml = side === 'back'
+    ? '<button class="btn bad" onclick="mark(0)">✗ не знаю</button>'
+    + '<button class="btn ok"  onclick="mark(1)">✓ знаю</button>'
+    : '';
+  var prevBtn = idx === 0
+    ? '<button class="btn" onclick="prev()" disabled>← назад</button>'
+    : '<button class="btn" onclick="prev()">← назад</button>';
+  var nextBtn = idx === cards.length-1
+    ? '<button class="btn" onclick="next()" disabled>вперёд →</button>'
+    : '<button class="btn" onclick="next()">вперёд →</button>';
+
+  html += '<div class="nav">'
+    + prevBtn
+    + markHtml
+    + nextBtn
+    + '</div>';
+
+  document.getElementById('area').innerHTML = html;
+}
+
+function flip() {
+  side = side === 'front' ? 'back' : 'front';
+  renderCards();
+}
+
+function mark(ok) {
+  var key = curSec + idx;
+  if (ok) { known[key] = 1; delete unk[key]; }
+  else     { unk[key]   = 1; delete known[key]; }
+  side = 'front';
+  next();
+}
+
+function next() {
+  var cards = bySection(curSec);
+  if (idx < cards.length - 1) { idx++; side = 'front'; renderCards(); }
+}
+
+function prev() {
+  if (idx > 0) { idx--; side = 'front'; renderCards(); }
+}
+
+// ─── ТЕСТ (все разделы) ───────────────────────────────────────────────
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function buildOpts() {
+  if (qopts) return;
+  // берём варианты ТОЛЬКО из текущего раздела
+  var cc = bySection(curSec);
+  var allA = cc.map(function(c) { return c.a; });
+  qopts = {};
+  for (var i = 0; i < cc.length; i++) {
+    var pool = [];
+    for (var j = 0; j < allA.length; j++) { if (j !== i) pool.push(allA[j]); }
+    // перемешать pool
+    for (var j = pool.length-1; j > 0; j--) {
+      var r = Math.floor(Math.random()*(j+1)), t = pool[j]; pool[j]=pool[r]; pool[r]=t;
+    }
+    var wrong = pool.slice(0, 3);
+    while (wrong.length < 3) wrong.push('—');
+    var opts = [cc[i].a].concat(wrong);
+    for (var j = opts.length-1; j > 0; j--) {
+      var r = Math.floor(Math.random()*(j+1)), t = opts[j]; opts[j]=opts[r]; opts[r]=t;
+    }
+    qopts[i] = opts;
+  }
+}
+
+var qans = {}; // globalIdx -> {chosen, correct}
+
+function renderQuiz() {
+  buildOpts();
+  var cc = bySection(curSec);
+  document.getElementById('pgr').textContent = '';
+  var corr = 0, tot = 0;
+  Object.keys(qans).forEach(function(k) { tot++; if (qans[k].ok) corr++; });
+  var html = '<div class="sbar">'
+    + 'Правильно: <strong>' + corr + '</strong> / ' + tot + ' из ' + cc.length
+    + '<button class="rbtn" onclick="resetQuiz()">↺ сначала</button>'
+    + '</div><div class="qlist">';
+  for (var i = 0; i < cc.length; i++) {
+    var card = cc[i], ans = qans[i], opts = qopts[i];
+    var optsHtml = '';
+    for (var oi = 0; oi < opts.length; oi++) {
+      var cls = 'opt', dis = '';
+      if (ans) {
+        dis = ' disabled';
+        if (opts[oi] === card.a) cls += ' ok2';
+        else if (oi === ans.chosen) cls += ' bad2';
+      }
+      optsHtml += '<button class="' + cls + '"' + dis + ' onclick="ansQuiz(' + i + ',' + oi + ')">' + opts[oi] + '</button>';
+    }
+    html += '<div class="qcard" id="qc' + i + '">'
+      + '<div class="qsec">' + curSec + '</div>'
+      + '<div class="qq">' + (i+1) + '. ' + cc[i].q.replace(/\n/g,' ') + '</div>'
+      + '<div class="opts">' + optsHtml + '</div>'
+      + '</div>';
+  }
+  html += '</div>';
+  document.getElementById('area').innerHTML = html;
+}
+
+function ansQuiz(i, oi) {
+  var cc = bySection(curSec), card = cc[i];
+  var chosen = qopts[i][oi], ok = chosen === card.a;
+  qans[i] = { ok: ok, chosen: oi };
+  var qcard = document.getElementById('qc' + i);
+  var btns = qcard.querySelectorAll('.opt');
+  for (var b = 0; b < btns.length; b++) {
+    btns[b].disabled = true;
+    if (qopts[i][b] === card.a) btns[b].classList.add('ok2');
+    else if (b === oi && !ok) btns[b].classList.add('bad2');
+  }
+  var corr = 0, tot = 0;
+  Object.keys(qans).forEach(function(k) { tot++; if (qans[k].ok) corr++; });
+  var bar = document.querySelector('.sbar');
+  if (bar) bar.innerHTML = 'Правильно: <strong>' + corr + '</strong> / ' + tot + ' из ' + cc.length
+    + '<button class="rbtn" onclick="resetQuiz()">↺ сначала</button>';
+}
+
+function resetQuiz() { qans = {}; qopts = null; renderQuiz(); }
+
+// ─── ВСЕ ФОРМУЛЫ ─────────────────────────────────────────────────────
+function renderAll() {
+  document.getElementById('pgr').textContent = '';
+  var html = '';
+  sections.forEach(function(sec, si) {
+    var cards = bySection(sec);
+    var rows = '';
+    cards.forEach(function(card, ci) {
+      rows += '<div class="frow" onclick="goCard(' + si + ',' + ci + ')">'
+        + '<div class="fnum">' + (ci+1) + '</div>'
+        + '<div class="fbody">'
+        + '<div class="fq">' + card.q + '</div>'
+        + '<div class="fa">' + card.a + '</div>'
+        + (card.n ? '<div class="fn">' + card.n + '</div>' : '')
+        + '</div></div>';
+    });
+    html += '<div class="allsec">'
+      + '<div class="allhdr" onclick="toggleSec(' + si + ')">'
+      + sec + ' <span style="font-weight:400;color:#aaa">' + cards.length + ' ▾</span>'
+      + '</div>'
+      + '<div class="allbody" id="sec' + si + '">' + rows + '</div>'
+      + '</div>';
+  });
+  document.getElementById('area').innerHTML = html;
+  // открываем текущий раздел
+  var cur = document.getElementById('sec' + sections.indexOf(curSec));
+  if (cur) cur.classList.add('open');
+}
+
+function toggleSec(si) {
+  var body = document.getElementById('sec' + si);
+  if (body) body.classList.toggle('open');
+}
+
+function goCard(si, ci) {
+  curSec = sections[si];
+  idx = ci;
+  side = 'front';
+  setMode('cards');
+  renderTabs();
+}
+
+// ─── ЗАПУСК ───────────────────────────────────────────────────────────
+function render() {
+  if (mode === 'cards') renderCards();
+  else if (mode === 'quiz') renderQuiz();
+  else renderAll();
+}
+
+renderTabs();
+render();
+
+document.addEventListener('keydown', function(e) {
+  if (mode !== 'cards') return;
+  if (e.key === 'ArrowRight') next();
+  if (e.key === 'ArrowLeft')  prev();
+  if (e.key === ' ') { e.preventDefault(); flip(); }
+});
+</script>
+</body>
+</html>
